@@ -12,8 +12,8 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : 'password',
-  database : 'roomies'
+  password : 'syntel123$',
+  database : 'sys'
 });
 
 app.post('/login',function(req,res){
@@ -53,10 +53,6 @@ app.get('/getAllJobs',function(req,res){
 
 })
 
-
-
-
-app.get
 app.get('/sample',function(req,res){
     res.send({
         "code" :"Success"
