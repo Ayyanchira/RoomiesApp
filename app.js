@@ -28,7 +28,6 @@ app.post('/login',function(req,res){
             "message":message
           })
         }else{
-          console.log(results);
           if(results.length > 0){
             res.send({
                 "code":200,
@@ -50,7 +49,21 @@ app.post('/login',function(req,res){
 })
 
 app.get('/getAllJobs',function(req,res){
-
+    connection.query('SELECT * FROM jobs', function (error, results, fields){
+        if (error) {
+            res.send({
+              "code":400,
+              "message":"Error Occurred"
+            })
+          }else{
+              res.send({
+                  "code":200,
+                  "message":"Login Successfull",
+                  "results":results
+                    });
+            }
+    });
+    
 })
 
 app.get('/sample',function(req,res){
