@@ -64,7 +64,7 @@ app.post('/submitTask',function(req,res){
       message = "error occured";
       res.send({
         "code":400,
-        "message":message
+        "message":error
       })
     }else{
       if(results.length > 0){
