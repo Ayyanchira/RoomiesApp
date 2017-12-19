@@ -50,7 +50,7 @@ app.post('/login',function(req,res){
 })
 
 app.get('/getAllJobs',function(req,res){
-    
+
 })
 
 
@@ -63,7 +63,7 @@ app.get('/sample',function(req,res){
     })
 })
 
-app.listen(4000,function(){
+app.listen(4001,function(){
     console.log('Server starter at port 4000')
 })
 
