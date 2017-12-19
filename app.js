@@ -67,7 +67,7 @@ app.post('/submitTask',function(req,res){
         "message":error
       })
     }else{
-      if(results.length > 0){
+      if(results.affectedRows > 0){
         res.send({
             "code":200,
             "message":"Task Added"
@@ -77,7 +77,7 @@ app.post('/submitTask',function(req,res){
         message="Something went wrong";
         res.send({
           "code":400,
-          "message":results
+          "message":"Some unhandled condition occurred. Contact Akshay"
             });
       }
     }
