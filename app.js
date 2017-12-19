@@ -77,7 +77,7 @@ app.post('/submitTask',function(req,res){
         message="Something went wrong";
         res.send({
           "code":400,
-          "message":message
+          "message":results
             });
       }
     }
