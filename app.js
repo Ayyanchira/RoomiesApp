@@ -53,6 +53,37 @@ app.post('/login',function(req,res){
         });
 })
 
+app.post('/submitTask',function(req,res){
+    var username = req.body.username;
+    var jobid = req.body.jobid;
+    var jobname = req.body.jobname;
+    var point = req.body.point;
+
+    connection.query('insert into pointlog(username,jobid,jobname,point) values(?,?,?,?)',[username,jobid,jobname,point], function (error, results, fields) {
+    if (error) {
+      message = "error occured";
+      res.send({
+        "code":400,
+        "message":message
+      })
+    }else{
+      if(results.length > 0){
+        res.send({
+            "code":200,
+            "message":"Task Added"
+              });
+      }
+      else{
+        message="Something went wrong";
+        res.send({
+          "code":400,
+          "message":message
+            });
+      }
+    }
+    });
+})
+
 app.get('/getAllJobs',function(req,res){
     connection.query('SELECT * FROM jobs', function (error, results, fields){
         if (error) {
@@ -70,6 +101,8 @@ app.get('/getAllJobs',function(req,res){
     });
     
 })
+
+
 
 app.get('/sample',function(req,res){
     res.send({
