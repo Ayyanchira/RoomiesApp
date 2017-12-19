@@ -31,7 +31,7 @@ app.post('/login',function(req,res){
           if(results.length > 0){
             res.send({
                 "code":200,
-                "message":"Login Successfull",
+                "message":"Login Successful",
                 "points":results[0].points,
                 "firstName":results[0].firstname,
                 "lastname":results[0].lastname
@@ -58,7 +58,7 @@ app.get('/getAllJobs',function(req,res){
           }else{
               res.send({
                   "code":200,
-                  "message":"Login Successfull",
+                  "message":"Login Successful",
                   "results":results
                     });
             }
@@ -73,7 +73,7 @@ app.get('/sample',function(req,res){
 })
 
 app.listen(4001,function(){
-    console.log('Server starter at port 4000')
+    console.log('Server starter at port 4001')
 })
 
 connection.connect(function(err){
