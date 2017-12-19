@@ -68,6 +68,8 @@ app.post('/submitTask',function(req,res){
       })
     }else{
       if(results.affectedRows > 0){
+        updateScore(username,point);
+
         res.send({
             "code":200,
             "message":"Task Added"
@@ -102,7 +104,26 @@ app.get('/getAllJobs',function(req,res){
     
 })
 
-
+function updateScore(username,topUp){
+    connection.query('SELECT * FROM users WHERE username = ?',[username], function (error, results, fields) {
+        if (error) {
+          console.log('Error while fetching the scores');
+        }else{
+          if(results.length > 0){
+              var score = results[0].points;
+              score = score + topUp;
+              
+              connection.query('UPDATE users SET points =? WHERE username = ?',[score,username], function (error, results, fields) {  
+                if (error) {
+                    console.log('Error while updating the scores');
+                  }else{
+                    console.log('Points updated')
+                }
+              });
+          }
+        }
+        });
+}
 
 app.get('/sample',function(req,res){
     res.send({
