@@ -1,0 +1,16 @@
+{
+  "name": "package",
+  "version": "1.0.0",
+  "description": "This file wlil contain all the dependencies required by the project required by the server",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Akshay Ayyanchira",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "mysql": "^2.15.0"
+  }
+}
