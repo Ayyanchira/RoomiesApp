@@ -165,7 +165,7 @@ app.post('/addJob',function(req,res){
 app.post('/myPoints',function(req,res){
     var username = req.body.username;
 
-    connection.query('SELECT * FROM users WHERE username = ?',[username], function (error, results, fields) {
+    connection.query('SELECT * FROM sys.pointlog WHERE username = ?',[username], function (error, results, fields) {
         if (error) {
           message = "error occured";
           res.send({
@@ -176,7 +176,7 @@ app.post('/myPoints',function(req,res){
           if(results.length > 0){
             res.send({
                 "code":200,
-                "points":results[0].points
+                "points":results
                   });
           }
         }
