@@ -181,7 +181,7 @@ app.post('/updateJob',function(req,res){
 
         res.send({
             "code":200,
-            "message":"Job Added Successfully"
+            "message":"Job Updated Successfully"
               });
       }
       else{
