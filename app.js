@@ -111,8 +111,11 @@ function updateScore(username,topUp){
         }else{
           if(results.length > 0){
               var score = results[0].points;
-              score = score + topUp;
-              
+              if (score == null){
+                  score = topUp;
+              }else{
+                score = score + topUp;
+              }
               connection.query('UPDATE users SET points =? WHERE username = ?',[score,username], function (error, results, fields) {  
                 if (error) {
                     console.log('Error while updating the scores');
@@ -124,6 +127,77 @@ function updateScore(username,topUp){
         }
         });
 }
+
+app.post('/addJob',function(req,res){
+    var name = req.body.name;
+    var description = req.body.description;
+    var type = req.body.type;
+    var category = req.body.category;
+    var point = req.body.point;
+
+    connection.query('insert into jobs(name, description, type, category, point) values(?,?,?,?,?)',[name, description, type, category, point], function (error, results, fields) {
+    if (error) {
+      message = "error occured";
+      res.send({
+        "code":400,
+        "message":error
+      })
+    }else{
+      if(results.affectedRows > 0){
+
+        res.send({
+            "code":200,
+            "message":"Job Added Successfully"
+              });
+      }
+      else{
+        message="Something went wrong";
+        res.send({
+          "code":400,
+          "message":"Some unhandled condition occurred. Contact the developer"
+            });
+      }
+    }
+    });
+})
+
+
+app.post('/myPoints',function(req,res){
+    var username = req.body.username;
+
+    connection.query('SELECT * FROM users WHERE username = ?',[username], function (error, results, fields) {
+        if (error) {
+          message = "error occured";
+          res.send({
+            "code":400,
+            "message":message
+          })
+        }else{
+          if(results.length > 0){
+            res.send({
+                "code":200,
+                "points":results[0].points
+                  });
+          }
+        }
+        });
+})
+
+
+app.get('/resetAll',function(req,res){
+    connection.query('UPDATE `sys`.`users` SET `points`= ?',[0],function(error,results,fields){
+        if(error == null){
+            connection.query('delete from sys.pointlog',function(error2,results2,fields2){
+                if(error2 == null){
+                    res.send({
+                        "code" : 200,
+                        "message" : "Records reset successful"
+                    })
+                }
+            });
+        }
+    });
+})
 
 app.get('/sample',function(req,res){
     res.send({
