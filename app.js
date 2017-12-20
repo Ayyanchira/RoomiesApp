@@ -178,6 +178,11 @@ app.post('/myPoints',function(req,res){
                 "code":200,
                 "points":results
                   });
+          }else{
+              res.send({
+                  "code" : 202,
+                  "message": "No records found"
+              })
           }
         }
         });
