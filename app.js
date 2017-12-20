@@ -161,6 +161,39 @@ app.post('/addJob',function(req,res){
     });
 })
 
+app.post('/updateJob',function(req,res){
+    var name = req.body.name;
+    var description = req.body.description;
+    var type = req.body.type;
+    var category = req.body.category;
+    var point = req.body.point;
+    var jobid = req.body.jobid;
+    
+    connection.query('update sys.jobs set name=?, description=?, type=?, category=?, point=? where jobid=?',[name, description, type, category, point,jobid], function (error, results, fields) {
+    if (error) {
+      message = "error occured";
+      res.send({
+        "code":400,
+        "message":error
+      })
+    }else{
+      if(results.affectedRows > 0){
+
+        res.send({
+            "code":200,
+            "message":"Job Added Successfully"
+              });
+      }
+      else{
+        res.send({
+          "code":202,
+          "message":"No changes found"
+            });
+      }
+    }
+    });
+})
+
 
 app.post('/myPoints',function(req,res){
     var username = req.body.username;
