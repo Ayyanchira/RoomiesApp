@@ -59,8 +59,8 @@ app.post('/submitTask',function(req,res){
     var jobname = req.body.jobname;
     var point = req.body.point;
     var date =  new Date();
+    date.setHours = date.getHours() - 5;
     var dateAndTimeString = date.toLocaleDateString() +" "+ date.toLocaleTimeString();
-
     connection.query('insert into pointlog(username,jobid,jobname,point,datetime) values(?,?,?,?,?)',[username,jobid,jobname,point,dateAndTimeString], function (error, results, fields) {
     if (error) {
       message = "error occured";
