@@ -58,8 +58,10 @@ app.post('/submitTask',function(req,res){
     var jobid = req.body.jobid;
     var jobname = req.body.jobname;
     var point = req.body.point;
+    var date =  new Date();
+    var dateAndTimeString = date.toDateString() +" "+ date.toLocaleTimeString();
 
-    connection.query('insert into pointlog(username,jobid,jobname,point) values(?,?,?,?)',[username,jobid,jobname,point], function (error, results, fields) {
+    connection.query('insert into pointlog(username,jobid,jobname,point,datetime) values(?,?,?,?,?)',[username,jobid,jobname,point,dateAndTimeString], function (error, results, fields) {
     if (error) {
       message = "error occured";
       res.send({
