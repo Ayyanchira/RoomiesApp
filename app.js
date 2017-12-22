@@ -24,6 +24,7 @@ var connection = mysql.createConnection({
 app.post('/login',function(req,res){
         var username = req.body.username;
         var password = req.body.password;
+        var points = getMyPoints(username);
         console.log(username + "is the username and "+password +" is the password");
         connection.query('SELECT * FROM users WHERE username = ? && password = ?',[username,password], function (error, results, fields) {
         if (error) {
@@ -34,10 +35,11 @@ app.post('/login',function(req,res){
           })
         }else{
           if(results.length > 0){
+            getMyPoints(username);
             res.send({
                 "code":200,
                 "message":"Login Successful",
-                "points":results[0].points,
+                "points":points,
                 "firstName":results[0].firstname,
                 "lastname":results[0].lastname
                   });
@@ -70,7 +72,7 @@ app.post('/submitTask',function(req,res){
       })
     }else{
       if(results.affectedRows > 0){
-        updateScore(username,point);
+        // updateScore(username,point);
 
         res.send({
             "code":200,
@@ -87,6 +89,50 @@ app.post('/submitTask',function(req,res){
     }
     });
 })
+
+function getMyPoints(username){
+  var totalPoint = 0;
+  console.log('get my points is getting called');
+  connection.query('Select * from pointlog where username = ?',[username],function(error,results,fields){
+    if (error == null){
+      console.log(results);
+      for (i=0 ; i < results.length; i++){
+        totalPoint = totalPoint + results[i].point;
+      }
+      console.log('Total Point is '+totalPoint);
+      return totalPoint;
+    }
+  });
+}
+
+app.post('/removeMyTask',function(req,res){
+  var logID = req.body.logID;
+  var username = req.body.username;
+  connection.query('DELETE FROM pointlog WHERE logID = ?',[logID], function (error, results, fields) {
+  if (error) {
+    message = "error occured";
+    res.send({
+      "code":400,
+      "message":error
+    })
+  }else{
+    if(results.affectedRows > 0){
+      res.send({
+          "code":200,
+          "message":"Record Removed"
+            });
+    }
+    else{
+      message="Something went wrong";
+      res.send({
+        "code":202,
+        "message":"Record has already been deleted."
+          });
+    }
+  }
+  });
+})
+
 
 app.get('/getAllJobs',function(req,res){
     connection.query('SELECT * FROM jobs', function (error, results, fields){
@@ -129,6 +175,8 @@ function updateScore(username,topUp){
         }
         });
 }
+
+
 
 app.post('/addJob',function(req,res){
     var name = req.body.name;
@@ -200,7 +248,7 @@ app.post('/updateJob',function(req,res){
 app.post('/myPoints',function(req,res){
     var username = req.body.username;
 
-    connection.query('SELECT * FROM sys.pointlog WHERE username = ?',[username], function (error, results, fields) {
+    connection.query('SELECT * FROM pointlog WHERE username = ?',[username], function (error, results, fields) {
         if (error) {
           message = "error occured";
           res.send({
@@ -253,7 +301,7 @@ connection.connect(function(err){
     if(!err) {
         console.log("Database is connected ... nn");
     } else {
-        console.log("Error connecting database ... nn");
+        console.log("Error connecting database ... nn" + err);
     }
     });
     exports.connection=connection;
