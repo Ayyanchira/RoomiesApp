@@ -272,7 +272,7 @@ app.post('/myPoints',function(req,res){
 })
 
 app.get('/showMemberPoints',function(req,res){
-  connection.query('SELECT username, sum(point) as points FROM pointlog group by username', function (error, results, fields) {
+  connection.query('SELECT username, sum(point) as `points` FROM pointlog group by username', function (error, results, fields) {
     if (error) {
       message = "error occured";
       res.send({
