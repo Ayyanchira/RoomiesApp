@@ -271,6 +271,30 @@ app.post('/myPoints',function(req,res){
         });
 })
 
+app.post('/showMemberPoints',function(req,res){
+  connection.query('SELECT username, sum(point) FROM pointlog group by username', function (error, results, fields) {
+    if (error) {
+      message = "error occured";
+      res.send({
+        "code":400,
+        "message":message
+      })
+    }else{
+      if(results.length > 0){
+        res.send({
+            "code":200,
+            "points":results
+              });
+      }else{
+          res.send({
+              "code" : 202,
+              "message": "No records found"
+          })
+      }
+    }
+    });
+})
+
 
 app.get('/resetAll',function(req,res){
     connection.query('UPDATE `sys`.`users` SET `points`= ?',[0],function(error,results,fields){
