@@ -61,7 +61,7 @@ app.post('/submitTask',function(req,res){
     var jobname = req.body.jobname;
     var point = req.body.point;
     var date =  new Date();
-    date.setHours = date.getHours() - 3;
+    date.setHours = date.getHours() - 5;
     var dateAndTimeString = date.toLocaleDateString() +" "+ date.toLocaleTimeString();
     connection.query('insert into pointlog(username,jobid,jobname,point,datetime) values(?,?,?,?,?)',[username,jobid,jobname,point,dateAndTimeString], function (error, results, fields) {
     if (error) {
@@ -244,6 +244,35 @@ app.post('/updateJob',function(req,res){
     });
 })
 
+
+app.post('/updatePassword',function(req,res){
+  var username = req.body.username;
+  var password = req.body.password;
+  
+  connection.query('update sys.users set password=? where username=?',[password, username], function (error, results, fields) {
+  if (error) {
+    message = "error occured";
+    res.send({
+      "code":400,
+      "message":error
+    })
+  }else{
+    if(results.affectedRows > 0){
+
+      res.send({
+          "code":200,
+          "message":"Password Updated Successfully"
+            });
+    }
+    else{
+      res.send({
+        "code":202,
+        "message":"Same password set"
+          });
+    }
+  }
+  });
+})
 
 app.post('/myPoints',function(req,res){
     var username = req.body.username;
